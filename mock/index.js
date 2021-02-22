@@ -54,4 +54,3 @@ module.exports = {
   mocks,
   mockXHR
 }
-

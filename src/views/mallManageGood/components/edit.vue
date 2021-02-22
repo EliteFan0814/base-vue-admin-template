@@ -1,0 +1,125 @@
+<template>
+  <div class="edit-wrap">
+    <el-dialog :title="info.id?'编辑':'新增'" :visible.sync="dialogVisible" center width="40%" @close="closeDialog(false)">
+      <el-form ref="formInfo" :model="formInfo" :rules="rules" label-width="100px">
+        <el-form-item label="商品名称" prop="name">
+          <div class="form-item">
+            <el-input v-model="formInfo.name" placeholder="请输入商品名称" clearable></el-input>
+          </div>
+        </el-form-item>
+        <el-form-item label="商品价格" prop="price">
+          <div class="form-item">
+            <el-input v-model="formInfo.price" clearable placeholder="请输入商品价格"
+              @input="transToNumberStr($event, 'price')"></el-input>
+          </div>
+        </el-form-item>
+        <el-form-item label="商品库存" prop="stock">
+          <div class="form-item">
+            <el-input v-model="formInfo.stock" clearable placeholder="请输入商品库存"
+              @input="transToNumberStr($event, 'stock')"></el-input>
+          </div>
+        </el-form-item>
+        <el-form-item label="上架日期" prop="date">
+          <div class="form-item">
+            <el-date-picker v-model="formInfo.date" type="date" placeholder="请输入上架日期" format="yyyy 年 MM 月 dd 日"
+              value-format="yyyy-MM-dd">
+            </el-date-picker>
+          </div>
+        </el-form-item>
+        <el-form-item label="上传图片">
+          <div class="form-item">
+            <el-upload action="https://jsonplaceholder.typicode.com/posts/" :show-file-list="false"
+              :http-request="uploadImgFile" list-type="picture-card">
+              <img v-if="formInfo.picurl" :src="formInfo.picurl" class="good-img" />
+              <i v-else class="el-icon-plus"></i>
+            </el-upload>
+          </div>
+        </el-form-item>
+        <!-- <el-form-item>
+          <el-button type="primary" @click="submitForm('formInfo')">确认</el-button>
+          <el-button @click="resetForm('formInfo')">重置</el-button>
+        </el-form-item> -->
+      </el-form>
+      <span slot="footer" class="dialog-footer">
+        <el-button @click="closeDialog(false)">取 消</el-button>
+        <el-button type="primary" @click="closeDialog(true)">确 定</el-button>
+      </span>
+    </el-dialog>
+  </div>
+</template>
+
+<script>
+export default {
+  props: {
+    info: {
+      type: Object,
+      default: () => {
+        return {}
+      }
+    }
+  },
+  data() {
+    return {
+      dialogVisible: true,
+      formInfo: {
+        name: '',
+        price: '',
+        stock: '',
+        date: '',
+        picurl: ''
+      },
+      rules: {
+        name: [{ required: true, message: '请输入商品名', trigger: 'blur' }],
+        price: [{ required: true, message: '请输入价格', trigger: 'blur' }],
+        stock: [{ required: true, message: '请输入库存', trigger: 'blur' }],
+        date: [{ required: true, message: '请输入上架日期', trigger: 'blur' }]
+      },
+      imgFiles: []
+    }
+  },
+  created() {
+    if (this.info.id) {
+      this.formInfo = { ...this.formInfo, ...this.info }
+    }
+  },
+  methods: {
+    uploadImgFile(file) {
+      const fileObj = file.file
+      const form = new FormData()
+      form.append('file', fileObj)
+    },
+    closeDialog(flag) {
+      if (flag) {
+        this.$refs['formInfo'].validate((valid) => {
+          if (!valid) return
+          if (this.formInfo.id) {
+            // 做修改操作
+            this.$emit('close', true)
+          } else {
+            // 做新增操作
+            this.$emit('close', true)
+          }
+        })
+      } else {
+        this.$emit('close')
+      }
+    },
+    // 转换为数字
+    transToNumberStr(val, str) {
+      this.formInfo[str] = val
+        .replace(/[^0-9.]/g, '')
+        .replace('.', '#*')
+        .replace(/\./g, '')
+        .replace('#*', '.')
+    }
+  }
+}
+</script>
+
+<style lang="scss" scoped>
+.edit-wrap {
+  .form-item {
+    width: 200px;
+  }
+}
+</style>
