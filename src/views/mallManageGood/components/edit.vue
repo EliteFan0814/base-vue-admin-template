@@ -28,9 +28,9 @@
         </el-form-item>
         <el-form-item label="上传图片">
           <div class="form-item up-wrap">
-            <el-upload :multiple="true" action="https://httpbin.org/post" :file-list="fileList" :show-file-list="true"
-              :on-remove="handleRemove" :on-success="handleSuccess" :before-upload="beforeUpload"
-              list-type="picture-card">
+            <el-upload :multiple="true" action="https://httpbin.org/post" :limit="imgUpLimit" :file-list="fileList"
+              :show-file-list="true" :on-remove="handleRemove" :on-success="handleSuccess" :before-upload="beforeUpload"
+              :on-exceed="handleExceed" list-type="picture-card">
               <i class="el-icon-plus"></i>
             </el-upload>
           </div>
@@ -70,6 +70,7 @@ export default {
         stock: [{ required: true, message: '请输入库存', trigger: 'blur' }],
         date: [{ required: true, message: '请输入上架日期', trigger: 'blur' }]
       },
+      imgUpLimit: 3,
       listObj: {},
       fileList: [
         { url: 'https://dummyimage.com/300' },
@@ -127,6 +128,9 @@ export default {
       }
     },
     beforeUpload(file) {
+      if (this.fileList.length > 1) {
+        return this.$message('已达最大上传数量！')
+      }
       const _self = this
       const _URL = window.URL || window.webkitURL
       const fileName = file.uid
@@ -146,6 +150,11 @@ export default {
         resolve(true)
         // reject(false)
       })
+    },
+    handleExceed(files, fileList) {
+      console.log('files', files)
+      console.log('fileList', fileList)
+      this.$message('已达最大上传数量！')
     },
     // 转换为数字
     transToNumberStr(val, str) {
