@@ -26,6 +26,7 @@ module.exports = {
     ],
     'vue/singleline-html-element-content-newline': 'off',
     'vue/multiline-html-element-content-newline': 'off',
+    'vue/mustache-interpolation-spacing': 'off',
     'vue/html-closing-bracket-newline': [
       'warn',
       {

@@ -23,7 +23,7 @@
         <template slot-scope="{row}">
           <template v-if="row.edit">
             <el-input v-model="row.value" class="edit-input" size="small" />
-            <el-button class="cancel-btn" size="small" icon="el-icon-refresh" type="warning" @click="cancelEdit(row)">
+            <el-button class="cancel-btn" size="small" type="warning" @click="cancelEdit(row)">
               取消
             </el-button>
           </template>
@@ -33,11 +33,10 @@
 
       <el-table-column align="center" label="编辑" width="120">
         <template slot-scope="{row}">
-          <el-button v-if="row.edit" type="success" size="small" icon="el-icon-circle-check-outline"
-            @click="confirmEdit(row)">
+          <el-button v-if="row.edit" type="success" size="small" @click="confirmEdit(row)">
             确认
           </el-button>
-          <el-button v-else type="primary" size="small" icon="el-icon-edit" @click="row.edit=!row.edit">
+          <el-button v-else type="primary" size="small" @click="row.edit=!row.edit">
             编辑
           </el-button>
         </template>

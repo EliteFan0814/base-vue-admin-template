@@ -27,18 +27,14 @@
           </div>
         </el-form-item>
         <el-form-item label="上传图片">
-          <div class="form-item">
-            <el-upload action="https://jsonplaceholder.typicode.com/posts/" :show-file-list="false"
-              :http-request="uploadImgFile" list-type="picture-card">
-              <img v-if="formInfo.picurl" :src="formInfo.picurl" class="good-img" />
-              <i v-else class="el-icon-plus"></i>
+          <div class="form-item up-wrap">
+            <el-upload :multiple="true" action="https://httpbin.org/post" :file-list="fileList" :show-file-list="true"
+              :on-remove="handleRemove" :on-success="handleSuccess" :before-upload="beforeUpload"
+              list-type="picture-card">
+              <i class="el-icon-plus"></i>
             </el-upload>
           </div>
         </el-form-item>
-        <!-- <el-form-item>
-          <el-button type="primary" @click="submitForm('formInfo')">确认</el-button>
-          <el-button @click="resetForm('formInfo')">重置</el-button>
-        </el-form-item> -->
       </el-form>
       <span slot="footer" class="dialog-footer">
         <el-button @click="closeDialog(false)">取 消</el-button>
@@ -74,7 +70,11 @@ export default {
         stock: [{ required: true, message: '请输入库存', trigger: 'blur' }],
         date: [{ required: true, message: '请输入上架日期', trigger: 'blur' }]
       },
-      imgFiles: []
+      listObj: {},
+      fileList: [
+        { url: 'https://dummyimage.com/300' },
+        { url: 'https://dummyimage.com/300' }
+      ]
     }
   },
   created() {
@@ -104,6 +104,49 @@ export default {
         this.$emit('close')
       }
     },
+    handleSuccess(response, file) {
+      console.log(response, file)
+      const uid = file.uid
+      const objKeyArr = Object.keys(this.listObj)
+      for (let i = 0, len = objKeyArr.length; i < len; i++) {
+        if (this.listObj[objKeyArr[i]].uid === uid) {
+          this.listObj[objKeyArr[i]].url = response.files.file
+          this.listObj[objKeyArr[i]].hasSuccess = true
+          return
+        }
+      }
+    },
+    handleRemove(file) {
+      const uid = file.uid
+      const objKeyArr = Object.keys(this.listObj)
+      for (let i = 0, len = objKeyArr.length; i < len; i++) {
+        if (this.listObj[objKeyArr[i]].uid === uid) {
+          delete this.listObj[objKeyArr[i]]
+          return
+        }
+      }
+    },
+    beforeUpload(file) {
+      const _self = this
+      const _URL = window.URL || window.webkitURL
+      const fileName = file.uid
+      this.listObj[fileName] = {}
+      return new Promise((resolve, reject) => {
+        const img = new Image()
+        img.src = _URL.createObjectURL(file)
+        img.onload = function () {
+          _self.listObj[fileName] = {
+            hasSuccess: false,
+            uid: file.uid,
+            width: this.width,
+            height: this.height
+          }
+        }
+        console.log('before', this.listObj)
+        resolve(true)
+        // reject(false)
+      })
+    },
     // 转换为数字
     transToNumberStr(val, str) {
       this.formInfo[str] = val
@@ -120,6 +163,12 @@ export default {
 .edit-wrap {
   .form-item {
     width: 200px;
+  }
+  .up-wrap {
+    width: 500px;
+    ::v-deep .el-upload-list {
+      display: inline;
+    }
   }
 }
 </style>
