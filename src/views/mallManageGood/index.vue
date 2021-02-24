@@ -11,7 +11,7 @@
         <el-button type="primary" icon="el-icon-search" @click="handleFilter">搜索</el-button>
       </div>
       <div class="right">
-        <el-button type="primary" icon="el-icon-edit" @click="handleEdit">新增</el-button>
+        <el-button type="primary" icon="el-icon-edit" @click="handleEdit(false)">新增</el-button>
       </div>
     </div>
     <div class="form-wrap">
@@ -168,7 +168,9 @@ export default {
   methods: {
     handleState(row) {},
     handleEdit(rowInfo) {
-      this.rowInfo = rowInfo
+      if (rowInfo) {
+        this.rowInfo = rowInfo
+      }
       this.showEdit = true
     },
     handleDelete(row, index) {
