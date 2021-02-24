@@ -14,6 +14,7 @@ module.exports = {
   // add your custom rules here
   //it is base on https://github.com/vuejs/eslint-config-vue
   rules: {
+    'no-async-promise-executor': 'off',
     'vue/max-attributes-per-line': [
       0,
       {

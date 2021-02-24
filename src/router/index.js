@@ -25,11 +25,7 @@ import Layout from '@/layout'
   }
  */
 
-/**
- * constantRoutes
- * a base page that does not have permission requirements
- * all roles can be accessed
- */
+//  基本路由 没有权限要求的基本页面 所有角色都可以访问
 export const constantRoutes = [
   {
     path: '/login',
@@ -137,24 +133,18 @@ export const constantRoutes = [
         meta: { title: '参数配置', icon: 'setting' }
       }
     ]
-  },
-
-  // 404 page must be placed at the end !!!
-  { path: '*', redirect: '/404', hidden: true }
+  }
 ]
-/**
- * asyncRoutes
- * the routes that need to be dynamically loaded based on user roles
- */
+//  需要根据用户角色动态加载的路由
 export const asyncRoutes = [
   {
     path: '/permission',
     component: Layout,
     redirect: '/permission/page',
     alwaysShow: true, // will always show the root menu
-    name: 'Permission',
+    name: '权限测试页面',
     meta: {
-      title: 'Permission',
+      title: '权限测试页面',
       icon: 'lock',
       roles: ['admin', 'editor'] // you can set roles in root nav
     },
@@ -162,21 +152,22 @@ export const asyncRoutes = [
       {
         path: 'page',
         component: () => import('@/views/permission/page'),
-        name: 'PagePermission',
+        name: '页面权限1',
         meta: {
-          title: 'Page Permission',
+          title: '页面权限1',
           roles: ['admin'] // or you can only set roles in sub nav
         }
       },
       {
-        path: 'directive',
-        component: () => import('@/views/permission/directive'),
-        name: 'DirectivePermission',
+        path: 'page2',
+        component: () => import('@/views/permission/page2'),
+        name: '页面权限2',
         meta: {
-          title: 'Directive Permission'
+          title: '页面权限2'
           // if do not set roles, means: this page does not require permission
         }
-      }
+      },
+      { path: '*', redirect: '/404', hidden: true }
     ]
   }
 ]
