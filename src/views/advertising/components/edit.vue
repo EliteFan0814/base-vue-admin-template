@@ -21,8 +21,12 @@
               :on-exceed="handleExceed" list-type="picture-card">
               <img v-if="formInfo.picurl" :src="formInfo.picurl" class="good-img" />
               <i v-else class="el-icon-plus"></i>
-              <!-- <i class="el-icon-plus"></i> -->
             </el-upload>
+            <div class="up-imp-wrap">
+              <div class="img-list-wrap"></div>
+              <label class="up-label" for="up-img">上传图片</label>
+              <input id="up-img" ref="upFile" type="file" name="file" accept="image/*" multiple @change="handleUpImg">
+            </div>
           </div>
         </el-form-item>
       </el-form>
@@ -114,6 +118,7 @@ export default {
       // if (this.fileList.length > 1) {
       //   return this.$message('已达最大上传数量！')
       // }
+      console.log('file', file)
       const _self = this
       const _URL = window.URL || window.webkitURL
       const fileName = file.uid
@@ -146,6 +151,11 @@ export default {
         .replace('.', '#*')
         .replace(/\./g, '')
         .replace('#*', '.')
+    },
+    handleUpImg() {
+      console.log(this.$refs.upFile.files)
+      const upFileList = this.$refs.upFile.files
+      upFileList.foreach((item) => {})
     }
   }
 }
@@ -167,6 +177,27 @@ export default {
     .good-img {
       max-width: 148px;
       max-height: 148px;
+    }
+    .up-imp-wrap {
+      font-size: 14px;
+      border: 1px solid red;
+      .up-label {
+        background-color: #1b9af7;
+        border-color: #1b9af7;
+        color: #fff;
+        padding: 5px;
+        border-radius: 5px;
+        &:hover {
+          cursor: pointer;
+          background-color: #4cb0f9;
+          border-color: #4cb0f9;
+        }
+      }
+      #up-img {
+        opacity: 0;
+        width: 0;
+        height: 0;
+      }
     }
   }
 }
