@@ -23,7 +23,9 @@
               <i v-else class="el-icon-plus"></i>
             </el-upload>
             <div class="up-imp-wrap">
-              <div class="img-list-wrap"></div>
+              <div class="img-list-wrap">
+                <img v-for="(item,index) in imgSrc" :key="index" :src="item" alt="">
+              </div>
               <label class="up-label" for="up-img">上传图片</label>
               <input id="up-img" ref="upFile" type="file" name="file" accept="image/*" multiple @change="handleUpImg">
             </div>
@@ -62,7 +64,8 @@ export default {
       },
       imgUpLimit: 1,
       listObj: {},
-      fileList: [{ url: 'https://dummyimage.com/300' }]
+      fileList: [{ url: 'https://dummyimage.com/300' }],
+      imgSrc: []
     }
   },
   created() {
@@ -154,8 +157,15 @@ export default {
     },
     handleUpImg() {
       console.log(this.$refs.upFile.files)
+      const _self = this
       const upFileList = this.$refs.upFile.files
-      upFileList.foreach((item) => {})
+      upFileList.forEach((item) => {
+        const reader = new FileReader()
+        reader.readAsDataURL(item)
+        reader.onload = function (e) {
+          _self.imgSrc.push(this.result)
+        }
+      })
     }
   }
 }
