@@ -24,7 +24,10 @@
             </el-upload>
             <div class="up-imp-wrap">
               <div class="img-list-wrap">
-                <img v-for="(item,index) in imgSrc" :key="index" :src="item" alt="">
+                <div v-for="(item,index) in imgSrc" :key="index" class="img-wrap">
+                  <progress :value="item.progressValue" :max="item.progressMax" class="progress"></progress>
+                  <img :src="item.imgUrl" alt="">
+                </div>
               </div>
               <label class="up-label" for="up-img">上传图片</label>
               <input id="up-img" ref="upFile" type="file" name="file" accept="image/*" multiple @change="handleUpImg">
@@ -157,13 +160,30 @@ export default {
     },
     handleUpImg() {
       console.log(this.$refs.upFile.files)
-      const _self = this
       const upFileList = this.$refs.upFile.files
       upFileList.forEach((item) => {
+        // 新建 FileReader 对象
         const reader = new FileReader()
         reader.readAsDataURL(item)
+        // 初始化一个图片显示对象
+        const imgInfoObj = {
+          progressValue: 0,
+          progressMax: undefined,
+          imgUrl: ''
+        }
+        this.imgSrc.push(imgInfoObj)
+        reader.onloadstart = function (e) {
+          imgInfoObj.progressValue = 0
+          imgInfoObj.progressMax = e.total
+          console.log('start', e.loaded)
+        }
+        reader.onprogress = function (e) {
+          imgInfoObj.progressValue = e.loaded
+          console.log('progress', e.loaded)
+        }
         reader.onload = function (e) {
-          _self.imgSrc.push(this.result)
+          imgInfoObj.progressValue = e.loaded
+          imgInfoObj.imgUrl = this.result
         }
       })
     }
@@ -191,6 +211,20 @@ export default {
     .up-imp-wrap {
       font-size: 14px;
       border: 1px solid red;
+      .img-list-wrap {
+        .img-wrap {
+          position: relative;
+          .progress {
+            position: absolute;
+            top: 0;
+            left: 50%;
+            transform: translateX(-50%);
+          }
+          img {
+            width: 150px;
+          }
+        }
+      }
       .up-label {
         background-color: #1b9af7;
         border-color: #1b9af7;
