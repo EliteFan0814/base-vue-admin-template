@@ -26,6 +26,7 @@
               <div class="img-list-wrap">
                 <div v-for="(item,index) in imgSrc" :key="index" class="img-wrap">
                   <progress :value="item.progressValue" :max="item.progressMax" class="progress"></progress>
+
                   <img :src="item.imgUrl" alt="">
                 </div>
               </div>
@@ -212,16 +213,25 @@ export default {
       font-size: 14px;
       border: 1px solid red;
       .img-list-wrap {
+        display: flex;
+        flex-wrap: wrap;
         .img-wrap {
           position: relative;
+          width: 150px;
+          height: 150px;
+          display: flex;
+          justify-content: center;
+          align-items: center;
           .progress {
             position: absolute;
-            top: 0;
             left: 50%;
+            bottom: 0;
             transform: translateX(-50%);
           }
           img {
-            width: 150px;
+            max-width: 150px;
+            max-height: 150px;
+            display: block;
           }
         }
       }
