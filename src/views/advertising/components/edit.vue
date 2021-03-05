@@ -16,7 +16,7 @@
         </el-form-item>
         <el-form-item label="上传图片">
           <div class="form-item up-wrap">
-            <el-upload :multiple="false" action="https://httpbin.org/post" :file-list="fileList" :show-file-list="false"
+            <el-upload :multiple="false" action="https://httpbin.org/post" :file-list="fileList" :show-file-list="true"
               :on-remove="handleRemove" :on-success="handleSuccess" :before-upload="beforeUpload"
               :on-exceed="handleExceed" list-type="picture-card">
               <img v-if="formInfo.picurl" :src="formInfo.picurl" class="good-img" />
@@ -133,6 +133,7 @@ export default {
       return new Promise((resolve, reject) => {
         const img = new Image()
         img.src = _URL.createObjectURL(file)
+        console.log(img.src)
         img.onload = function () {
           _self.listObj[fileName] = {
             hasSuccess: false,
