@@ -158,7 +158,7 @@ export default {
         // it will try to keep these URLs intact
         // https://www.tiny.cloud/docs-3x/reference/configuration/Configuration3x@convert_urls/
         // https://stackoverflow.com/questions/5196205/disable-tinymce-absolute-to-relative-url-conversions
-        convert_urls: false
+        convert_urls: false,
         // 整合七牛上传
         // images_dataimg_filter(img) {
         //   setTimeout(() => {
@@ -174,24 +174,41 @@ export default {
         //   }, 0);
         //   return img
         // },
-        // images_upload_handler(blobInfo, success, failure, progress) {
-        //   progress(0);
-        //   const token = _this.$store.getters.token;
-        //   getToken(token).then(response => {
-        //     const url = response.data.qiniu_url;
-        //     const formData = new FormData();
-        //     formData.append('token', response.data.qiniu_token);
-        //     formData.append('key', response.data.qiniu_key);
-        //     formData.append('file', blobInfo.blob(), url);
-        //     upload(formData).then(() => {
-        //       success(url);
-        //       progress(100);
-        //     })
-        //   }).catch(err => {
-        //     failure('出现未知问题，刷新页面，或者联系程序员')
-        //     console.log(err);
-        //   });
-        // },
+        images_upload_handler(blobInfo, success, failure, progress) {
+          progress(0)
+          const formData = new FormData()
+          formData.append('file', blobInfo.blob())
+          // todo 处理图片上传
+          // this.$http
+          //   .post('/manage/Image/upload', formData)
+          //   .then((res) => {
+          //     success(res.data.fileurl_str)
+          //   })
+          //   .catch(() => {
+          //     failure('上传失败，请重试')
+          //   })
+          setTimeout(() => {
+            success()
+            progress(100)
+          }, 1000)
+          // const token = _this.$store.getters.token
+          // getToken(token)
+          //   .then((response) => {
+          //     const url = response.data.qiniu_url
+          //     const formData = new FormData()
+          //     formData.append('token', response.data.qiniu_token)
+          //     formData.append('key', response.data.qiniu_key)
+          //     formData.append('file', blobInfo.blob(), url)
+          //     upload(formData).then(() => {
+          //       success(url)
+          //       progress(100)
+          //     })
+          //   })
+          //   .catch((err) => {
+          //     failure('出现未知问题，刷新页面，或者联系程序员')
+          //     console.log(err)
+          //   })
+        }
       })
     },
     destroyTinymce() {

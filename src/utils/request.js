@@ -52,44 +52,49 @@ service.interceptors.response.use(
    * You can also judge the status by HTTP Status Code
    */
   response => {
-    const res = response.data
-    // if the custom code is not 20000, it is judged as an error.
-    if (res.code !== 20000) {
-      Message({
-        message: res.message || 'Error',
-        type: 'error',
-        duration: 5 * 1000
-      })
-
-      // 50008: Illegal token; 50012: Other clients logged in; 50014: Token expired;
-      if (res.code === 50008 || res.code === 50012 || res.code === 50014) {
-        // to re-login
-        MessageBox.confirm(
-          'You have been logged out, you can cancel to stay on this page, or log in again',
-          'Confirm logout',
-          {
-            confirmButtonText: 'Re-Login',
-            cancelButtonText: 'Cancel',
-            type: 'warning'
-          }
-        ).then(() => {
+    if (response.data.success || response.data.code === 1) {
+      // successcess
+      if (response.data.msg && response.data.msg !== 'ok') {
+        Message.success(response.data.msg)
+      }
+      return response.data
+    }
+    if (response.data.code === 0) {
+      Message.error(response.data.msg)
+    }
+    // if (response.data.success || response.data.code === 1) return response.data
+    return Promise.reject(response.data)
+  },
+  error => {
+    console.log('err' + error) // for debug
+    if (error.response) {
+      if (error.response.status === 401) {
+        MessageBox.confirm('身份认证已过期，请重新登录', '认证过期', {
+          confirmButtonText: '重新登录',
+          cancelButtonText: '取消',
+          type: 'warning'
+        }).then(() => {
           store.dispatch('user/resetToken').then(() => {
             location.reload()
           })
         })
       }
-      return Promise.reject(new Error(res.message || 'Error'))
-    } else {
-      return res
+      if (error.response.status === 403) {
+        Message.error('没有操作权限')
+      }
+      if (error.response.status === 400) {
+        if (error.response.data && error.response.data.message) {
+          Message.error(error.response.data.message)
+        } else {
+          Message.error(JSON.stringify(error.response.data))
+        }
+      }
     }
-  },
-  error => {
-    console.log('err' + error) // for debug
-    Message({
-      message: error.message,
-      type: 'error',
-      duration: 5 * 1000
-    })
+    // Message({
+    //   message: error.message,
+    //   type: 'error',
+    //   duration: 5 * 1000
+    // })
     return Promise.reject(error)
   }
 )
