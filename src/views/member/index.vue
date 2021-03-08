@@ -15,24 +15,29 @@
       </div>
     </div>
     <div class="form-wrap">
-      <el-table :data="tableData" highlight-current-row border style="width: 100%">
-        <el-table-column prop="name" label="头像" width="100" align="center">
+      <el-table :data="tableData" highlight-current-row border height="700" style="width: 100%">
+        <el-table-column prop="name" label="会员头像" width="100" align="center">
           <template slot-scope="{row}">
             <div class="img-wrap">
-              <img :src="row.avatar" class="avatar" alt="">
+              <el-image class="avatar" :src="row.img" :preview-src-list="[row.img]">
+              </el-image>
+              <!-- <img class="avatar" :src="row.img" alt=""> -->
             </div>
           </template>
         </el-table-column>
-        <el-table-column prop="name" label="姓名" align="center">
+        <el-table-column prop="name" label="会员昵称" align="center">
+        </el-table-column>
+        <el-table-column prop="phone" label="联系电话" align="center">
         </el-table-column>
         <el-table-column prop="date" label="注册日期" width="180" align="center">
         </el-table-column>
-        <el-table-column prop="address" label="地址" align="center">
-        </el-table-column>
         <el-table-column prop="address" label="状态" align="center">
           <template slot-scope="{row}">
-            <el-button type="primary" size="mini" @click="handleUpdate(row)">
-              锁定
+            <el-button v-if="row.state" type="primary" size="mini" @click="handleState(row,$index)">
+              正常
+            </el-button>
+            <el-button v-else type="danger" size="mini" @click="handleState(row)">
+              已锁定
             </el-button>
           </template>
         </el-table-column>
@@ -70,12 +75,12 @@ export default {
       rowInfo: undefined,
       total: 120,
       stateList: [
-        { label: '已锁定', value: 0 },
-        { label: '正常', value: 1 }
+        { label: '已下架', value: 0 },
+        { label: '已上架', value: 1 }
       ],
       listQuery: {
         page: 1,
-        limit: 20,
+        limit: 10,
         state: '',
         keywords: undefined
       },
@@ -84,27 +89,73 @@ export default {
           id: 1,
           date: '2016-05-02',
           name: '王小虎',
-          avatar: 'https://dummyimage.com/600x400/000/fff',
-          phone: '15202221114',
-          address: '上海市普陀区金沙江路 1518 弄'
+          phone: '15025414441',
+          stock: 50,
+          state: 1,
+          img: 'https://dummyimage.com/600x400/000/fff'
         },
         {
           id: 2,
-          date: '2016-05-04',
+          date: '2016-05-02',
           name: '王小虎',
-          address: '上海市普陀区金沙江路 1517 弄'
+          phone: '15025414441',
+          stock: 50,
+          state: 0,
+          img: 'https://dummyimage.com/200x400/000/fff'
         },
         {
           id: 3,
-          date: '2016-05-01',
+          date: '2016-05-02',
           name: '王小虎',
-          address: '上海市普陀区金沙江路 1519 弄'
+          phone: '15025414441',
+          stock: 50,
+          state: 1,
+          img: 'https://dummyimage.com/100x200/000/fff'
         },
         {
           id: 4,
-          date: '2016-05-03',
+          date: '2016-05-02',
           name: '王小虎',
-          address: '上海市普陀区金沙江路 1516 弄'
+          phone: '15025414441',
+          stock: 50,
+          state: 1,
+          img: 'https://dummyimage.com/400x600/000/fff'
+        },
+        {
+          id: 4,
+          date: '2016-05-02',
+          name: '王小虎',
+          phone: '15025414441',
+          stock: 50,
+          state: 1,
+          img: 'https://dummyimage.com/400x600/000/fff'
+        },
+        {
+          id: 4,
+          date: '2016-05-02',
+          name: '王小虎',
+          phone: '15025414441',
+          stock: 50,
+          state: 1,
+          img: 'https://dummyimage.com/400x600/000/fff'
+        },
+        {
+          id: 4,
+          date: '2016-05-02',
+          name: '王小虎',
+          phone: '15025414441',
+          stock: 50,
+          state: 1,
+          img: 'https://dummyimage.com/400x600/000/fff'
+        },
+        {
+          id: 4,
+          date: '2016-05-02',
+          name: '王小虎',
+          phone: '15025414441',
+          stock: 50,
+          state: 1,
+          img: 'https://dummyimage.com/400x600/000/fff'
         }
       ]
     }
@@ -113,9 +164,12 @@ export default {
     ...mapGetters(['name'])
   },
   methods: {
+    handleState(row) {},
     handleEdit(rowInfo) {
       if (rowInfo) {
         this.rowInfo = rowInfo
+      } else {
+        this.rowInfo = undefined
       }
       this.showEdit = true
     },
@@ -172,16 +226,20 @@ export default {
       }
     }
     .img-wrap {
-      margin: 0 auto;
-      width: 80px;
-      height: 80px;
-      display: flex;
-      align-items: center;
-      justify-content: center;
       .avatar {
-        display: block;
-        max-width: 80px;
-        max-height: 80px;
+        margin: 0 auto;
+        width: 80px;
+        height: 80px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        ::v-deep .el-image__inner {
+          display: block;
+          width: auto;
+          height: auto;
+          max-width: 80px;
+          max-height: 80px;
+        }
       }
     }
     .pagination-wrap {

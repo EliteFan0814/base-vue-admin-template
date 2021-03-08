@@ -2,29 +2,33 @@
   <div class="edit-wrap">
     <el-dialog :title="info.id?'编辑':'新增'" :visible.sync="dialogVisible" center width="40%" @close="closeDialog(false)">
       <el-form ref="formInfo" :model="formInfo" :rules="rules" label-width="100px">
-        <el-form-item label="广告名称" prop="name">
+        <el-form-item label="分类名称" prop="name">
           <div class="form-item">
-            <el-input v-model="formInfo.name" placeholder="请输入广告名称" clearable></el-input>
+            <el-input v-model="formInfo.name" placeholder="请输入分类名称" clearable></el-input>
           </div>
         </el-form-item>
-        <el-form-item label="上架日期" prop="date">
+        <el-form-item label="分类库存" prop="stock">
           <div class="form-item">
-            <el-date-picker v-model="formInfo.date" type="date" placeholder="请输入上架日期" format="yyyy 年 MM 月 dd 日"
+            <el-input v-model="formInfo.stock" clearable placeholder="请输入分类库存"
+              @input="transToNumberStr($event, 'stock')"></el-input>
+          </div>
+        </el-form-item>
+        <el-form-item label="创建日期" prop="date">
+          <div class="form-item">
+            <el-date-picker v-model="formInfo.date" type="date" placeholder="请输入创建日期" format="yyyy 年 MM 月 dd 日"
               value-format="yyyy-MM-dd">
             </el-date-picker>
           </div>
         </el-form-item>
-        <el-form-item label="上传图片">
+        <!-- <el-form-item label="上传图片">
           <div class="form-item up-wrap">
-            <el-upload :multiple="false" action="https://httpbin.org/post" :file-list="fileList" :show-file-list="true"
-              :on-remove="handleRemove" :on-success="handleSuccess" :before-upload="beforeUpload"
+            <el-upload :multiple="true" action="https://httpbin.org/post" :limit="imgUpLimit" :file-list="fileList"
+              :show-file-list="true" :on-remove="handleRemove" :on-success="handleSuccess" :before-upload="beforeUpload"
               :on-exceed="handleExceed" list-type="picture-card">
-              <img v-if="formInfo.picurl" :src="formInfo.picurl" class="good-img" />
-              <i v-else class="el-icon-plus"></i>
-              <!-- <i class="el-icon-plus"></i> -->
+              <i class="el-icon-plus"></i>
             </el-upload>
           </div>
-        </el-form-item>
+        </el-form-item> -->
       </el-form>
       <span slot="footer" class="dialog-footer">
         <el-button @click="closeDialog(false)">取 消</el-button>
@@ -49,18 +53,23 @@ export default {
       dialogVisible: true,
       formInfo: {
         name: '',
+        price: '',
+        stock: '',
         date: '',
-        // picurl: 'https://dummyimage.com/300'
         picurl: ''
       },
       rules: {
-        name: [{ required: true, message: '请输入广告名', trigger: 'blur' }],
-        date: [{ required: true, message: '请输入上架日期', trigger: 'blur' }]
+        name: [{ required: true, message: '请输入分类名', trigger: 'blur' }],
+        price: [{ required: true, message: '请输入价格', trigger: 'blur' }],
+        stock: [{ required: true, message: '请输入库存', trigger: 'blur' }],
+        date: [{ required: true, message: '请输入创建日期', trigger: 'blur' }]
       },
-      imgUpLimit: 1,
+      imgUpLimit: 3,
       listObj: {},
-      // fileList: [{ url: 'https://dummyimage.com/300' }]
-      fileList: []
+      fileList: [
+        { url: 'https://dummyimage.com/300' },
+        { url: 'https://dummyimage.com/300' }
+      ]
     }
   },
   created() {
@@ -113,9 +122,9 @@ export default {
       }
     },
     beforeUpload(file) {
-      // if (this.fileList.length > 1) {
-      //   return this.$message('已达最大上传数量！')
-      // }
+      if (this.fileList.length > 1) {
+        return this.$message('已达最大上传数量！')
+      }
       const _self = this
       const _URL = window.URL || window.webkitURL
       const fileName = file.uid
@@ -162,13 +171,6 @@ export default {
     width: 500px;
     ::v-deep .el-upload-list {
       display: inline;
-    }
-    ::v-deep .el-upload {
-      border: none;
-    }
-    .good-img {
-      max-width: 148px;
-      max-height: 148px;
     }
   }
 }
