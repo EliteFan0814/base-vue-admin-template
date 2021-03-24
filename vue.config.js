@@ -36,8 +36,8 @@ module.exports = {
       warnings: false,
       errors: true
     },
-    // proxy: 'http://daka.zhimalivip.com/manage'
-    before: require('./mock/mock-server.js')
+    proxy: 'http://t_erkangsw.demo2.dx623.com'
+    // before: require('./mock/mock-server.js')
   },
   configureWebpack: {
     // provide the app's title in webpack's name field, so that

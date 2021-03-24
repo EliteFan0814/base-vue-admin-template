@@ -95,6 +95,8 @@ export default {
     handleEdit(rowInfo) {
       if (rowInfo) {
         this.rowInfo = rowInfo
+      } else {
+        this.rowInfo = undefined
       }
       this.showEdit = true
     },
