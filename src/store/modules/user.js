@@ -50,26 +50,22 @@ const actions = {
   // get user info
   getInfo({ commit, state }) {
     return new Promise((resolve, reject) => {
-      // 若无 getInfo 自定义方式
+      // 1. 若无 getInfo获取登录用户信息，也没有啥角色权限转换就用如下自定义方式自定义一个 admin 角色：
       const roles = ['admin']
       commit('SET_ROLES', roles)
       resolve({ roles })
-      // getInfo方式
+      // 2. 若有权限管理，分角色展示，角色从getInfo 中获取，则采用如下方式：
       // getInfo(state.token)
       //   .then(response => {
       //     const { data } = response
-
       //     if (!data) {
       //       reject('Verification failed, please Login again.')
       //     }
-
       //     const { roles, name, avatar, introduction } = data
-
       //     // roles must be a non-empty array
       //     if (!roles || roles.length <= 0) {
       //       reject('getInfo: roles must be a non-null array!')
       //     }
-
       //     commit('SET_ROLES', roles)
       //     commit('SET_NAME', name)
       //     commit('SET_AVATAR', avatar)

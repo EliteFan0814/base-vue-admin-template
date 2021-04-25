@@ -17,16 +17,16 @@ router.beforeEach(async (to, from, next) => {
   // set page title
   document.title = getPageTitle(to.meta.title)
 
-  // determine whether the user has logged in
+  // 判断是否已经登录
   const hasToken = getToken()
-
   if (hasToken) {
     if (to.path === '/login') {
-      // if is logged in, redirect to the home page
+      // i如果已经登录，重定向到 '/'
       next({ path: '/' })
       NProgress.done()
     } else {
-      // determine whether the user has obtained his permission roles through getInfo
+      // 通过 getInfo 接口判断用户是否获得他对应的角色权限
+      // 判断是否获取角色
       const hasRoles = store.getters.roles && store.getters.roles.length > 0
       if (hasRoles) {
         next()
@@ -40,9 +40,8 @@ router.beforeEach(async (to, from, next) => {
             'permission/generateRoutes',
             roles
           )
-          // dynamically add accessible routes
+          // 动态添加权限路由
           router.addRoutes(accessRoutes)
-          console.log('router', router)
           // hack method to ensure that addRoutes is complete
           // set the replace: true, so the navigation will not leave a history record
           next({ ...to, replace: true })

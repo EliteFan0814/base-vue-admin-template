@@ -51,8 +51,10 @@ const actions = {
     return new Promise(resolve => {
       let accessedRoutes
       if (roles.includes('admin')) {
+        // 如果角色包含 admin 则可以访问所有的路由
         accessedRoutes = asyncRoutes || []
       } else {
+        // 否则，过滤路由
         accessedRoutes = filterAsyncRoutes(asyncRoutes, roles)
       }
       commit('SET_ROUTES', accessedRoutes)
