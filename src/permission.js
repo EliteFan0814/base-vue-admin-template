@@ -32,17 +32,17 @@ router.beforeEach(async (to, from, next) => {
         next()
       } else {
         try {
-          // get user info
-          // note: roles must be a object array! such as: ['admin'] or ,['developer','editor']
+          // 注意:角色列表必须是一个数组，例如: ['admin'] 或者 ['developer','editor']
+          // 通过 getInfo 来获取用户的角色
           const { roles } = await store.dispatch('user/getInfo')
-          // generate accessible routes map based on roles
+          // 根据角色生成对应的权限路由
           const accessRoutes = await store.dispatch(
             'permission/generateRoutes',
             roles
           )
-          // 动态添加权限路由
+          // 动态添加路由
           router.addRoutes(accessRoutes)
-          // hack method to ensure that addRoutes is complete
+          // 使用 next({ ...to, replace: true }) 确保路由完整添加成功
           // set the replace: true, so the navigation will not leave a history record
           next({ ...to, replace: true })
         } catch (error) {
@@ -55,13 +55,12 @@ router.beforeEach(async (to, from, next) => {
       }
     }
   } else {
-    /* has no token*/
-
+    /* 没有 token*/
     if (whiteList.indexOf(to.path) !== -1) {
-      // in the free login whitelist, go directly
+      // 对于无需验证的白名单路由，直接进入
       next()
     } else {
-      // other pages that do not have permission to access are redirected to the login page.
+      // 其他无权访问的页面将被重定向到登录页面
       next(`/login?redirect=${to.path}`)
       NProgress.done()
     }

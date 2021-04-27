@@ -47,24 +47,25 @@ const actions = {
     })
   },
 
-  // get user info
+  // get user info 通过此方法来获取用户的角色列表，进而进行动态路由的添加
   getInfo({ commit, state }) {
     return new Promise((resolve, reject) => {
-      // 1. 若无 getInfo获取登录用户信息，也没有啥角色权限转换就用如下自定义方式自定义一个 admin 角色：
+      // 方式1. 没有角色权限转换 无 getInfo获取登录用户信息，用如下自定义方式自定义一个 admin 角色：
       const roles = ['admin']
       commit('SET_ROLES', roles)
       resolve({ roles })
-      // 2. 若有权限管理，分角色展示，角色从getInfo 中获取，则采用如下方式：
+
+      // 方式2. 若有权限管理，通过 token 或其他方式 从 getInfo 中获取用户角色信息，则采用如下方式：
       // getInfo(state.token)
       //   .then(response => {
       //     const { data } = response
       //     if (!data) {
-      //       reject('Verification failed, please Login again.')
+      //       reject('验证失败，请重新登录')
       //     }
       //     const { roles, name, avatar, introduction } = data
-      //     // roles must be a non-empty array
+      //     // 角色必须是一个非空数组！！！
       //     if (!roles || roles.length <= 0) {
-      //       reject('getInfo: roles must be a non-null array!')
+      //       reject('getInfo: 角色必须是一个非空数组')
       //     }
       //     commit('SET_ROLES', roles)
       //     commit('SET_NAME', name)
