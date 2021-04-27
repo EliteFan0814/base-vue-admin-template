@@ -50,7 +50,7 @@ const actions = {
   // get user info 通过此方法来获取用户的角色列表，进而进行动态路由的添加
   getInfo({ commit, state }) {
     return new Promise((resolve, reject) => {
-      // 方式1. 没有角色权限转换 无 getInfo获取登录用户信息，用如下自定义方式自定义一个 admin 角色：
+      // 方式1. 若无权限管理，用如下自定义方式自定义一个 admin 角色来访问所有路由：
       const roles = ['admin']
       commit('SET_ROLES', roles)
       resolve({ roles })
