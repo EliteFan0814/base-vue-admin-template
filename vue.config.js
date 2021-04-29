@@ -36,7 +36,7 @@ module.exports = {
       warnings: false,
       errors: true
     },
-    proxy: 'http://t_erkangsw.demo2.dx623.com'
+    proxy: 'https://xiaochengxu.pinglixiang.com/'
     // before: require('./mock/mock-server.js')
   },
   configureWebpack: {

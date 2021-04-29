@@ -36,6 +36,7 @@ const actions = {
     return new Promise((resolve, reject) => {
       login({ account: username.trim(), password: password })
         .then(response => {
+          console.log('response', response)
           const { data } = response
           commit('SET_TOKEN', data.mytoken.token)
           setToken(data.mytoken.token)
@@ -82,22 +83,32 @@ const actions = {
   // user logout
   logout({ commit, state, dispatch }) {
     return new Promise((resolve, reject) => {
-      logout(state.token)
-        .then(() => {
-          commit('SET_TOKEN', '')
-          commit('SET_ROLES', [])
-          removeToken()
-          resetRouter()
+      // 方式1 直接清除token登出
+      commit('SET_TOKEN', '')
+      commit('SET_ROLES', [])
+      removeToken()
+      resetRouter()
+      // reset visited views and cached views
+      // to fixed https://github.com/PanJiaChen/vue-element-admin/issues/2485
+      dispatch('tagsView/delAllViews', null, { root: true })
+      resolve()
+      // 方式2 发送退出登录请求来退出
+      // logout(state.token)
+      //   .then(() => {
+      //     commit('SET_TOKEN', '')
+      //     commit('SET_ROLES', [])
+      //     removeToken()
+      //     resetRouter()
 
-          // reset visited views and cached views
-          // to fixed https://github.com/PanJiaChen/vue-element-admin/issues/2485
-          dispatch('tagsView/delAllViews', null, { root: true })
+      //     // reset visited views and cached views
+      //     // to fixed https://github.com/PanJiaChen/vue-element-admin/issues/2485
+      //     dispatch('tagsView/delAllViews', null, { root: true })
 
-          resolve()
-        })
-        .catch(error => {
-          reject(error)
-        })
+      //     resolve()
+      //   })
+      //   .catch(error => {
+      //     reject(error)
+      //   })
     })
   },
 
