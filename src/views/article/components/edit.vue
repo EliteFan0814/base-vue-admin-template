@@ -1,32 +1,35 @@
 <template>
   <div class="edit-wrap">
-    <el-dialog :title="info.id?'编辑':'新增'" :visible.sync="dialogVisible" center width="60%" @close="closeDialog(false)">
-      <el-form ref="formInfo" :model="formInfo" :rules="rules" label-width="100px">
-        <el-form-item label="文章标题" prop="name">
-          <div class="form-item">
-            <el-input v-model="formInfo.name" placeholder="请输入文章标题" clearable></el-input>
-          </div>
-        </el-form-item>
-        <el-form-item label="文章类型" prop="type">
-          <div class="form-item">
-            <el-select v-model="formInfo.type" placeholder="请选择类型" clearable style="width: 150px" class="item">
-              <el-option v-for="item in typeList" :key="item.value" :label="item.label" :value="item.value" />
-            </el-select>
-          </div>
-        </el-form-item>
-        <el-form-item label="发布日期" prop="type">
-          <div class="form-item">
-            <el-date-picker v-model="formInfo.date" type="date" placeholder="请输入发布日期" format="yyyy 年 MM 月 dd 日"
-              value-format="yyyy-MM-dd">
-            </el-date-picker>
-          </div>
-        </el-form-item>
-        <el-form-item label="文章内容" prop="content">
-          <div class="form-item" style="width:700px;">
-            <Editor v-model="formInfo.content" height="300"></Editor>
-          </div>
-        </el-form-item>
-      </el-form>
+    <el-dialog :title="info.id?'编辑':'新增'" :visible.sync="dialogVisible" fullscreen :close-on-click-modal="false" center
+      width="60%" @close="closeDialog(false)">
+      <div class="form-wrap">
+        <el-form ref="formInfo" :model="formInfo" :rules="rules" label-width="100px">
+          <el-form-item label="文章标题" prop="name">
+            <div class="form-item">
+              <el-input v-model="formInfo.name" placeholder="请输入文章标题" clearable></el-input>
+            </div>
+          </el-form-item>
+          <el-form-item label="文章类型" prop="type">
+            <div class="form-item">
+              <el-select v-model="formInfo.type" placeholder="请选择类型" clearable style="width: 150px" class="item">
+                <el-option v-for="item in typeList" :key="item.value" :label="item.label" :value="item.value" />
+              </el-select>
+            </div>
+          </el-form-item>
+          <el-form-item label="发布日期" prop="type">
+            <div class="form-item">
+              <el-date-picker v-model="formInfo.date" type="date" placeholder="请输入发布日期" format="yyyy 年 MM 月 dd 日"
+                value-format="yyyy-MM-dd">
+              </el-date-picker>
+            </div>
+          </el-form-item>
+          <el-form-item label="文章内容" prop="content">
+            <div class="form-item" style="width:700px;">
+              <Editor v-model="formInfo.content" height="300"></Editor>
+            </div>
+          </el-form-item>
+        </el-form>
+      </div>
       <span slot="footer" class="dialog-footer">
         <el-button @click="closeDialog(false)">取 消</el-button>
         <el-button type="primary" @click="closeDialog(true)">确 定</el-button>
@@ -117,6 +120,13 @@ export default {
 
 <style lang="scss" scoped>
 .edit-wrap {
+  .form-wrap {
+    display: flex;
+    align-items: center;
+    .el-form{
+      margin: 0 auto;
+    }
+  }
   .form-item {
     width: 200px;
   }

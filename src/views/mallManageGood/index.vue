@@ -15,7 +15,7 @@
       </div>
     </div>
     <div class="form-wrap">
-      <el-table :data="tableData" highlight-current-row border height="700" style="width: 100%">
+      <el-table v-loading="listLoading" :data="tableData" highlight-current-row border height="700" style="width: 100%">
         <el-table-column prop="name" label="商品图片" width="100" align="center">
           <template slot-scope="{row}">
             <div class="img-wrap">
@@ -73,6 +73,7 @@ export default {
   components: { Pagination, edit },
   data() {
     return {
+      listLoading: false,
       showEdit: false,
       rowInfo: undefined,
       total: 120,
@@ -205,7 +206,12 @@ export default {
       this.listQuery.page = 1
       this.getList()
     },
-    getList() {}
+    getList() {
+      this.listLoading = true
+      setTimeout(() => {
+        this.listLoading = false
+      }, 1000)
+    }
   }
 }
 </script>

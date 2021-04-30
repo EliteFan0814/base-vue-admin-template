@@ -1,6 +1,6 @@
 <template>
   <div class="edit-wrap">
-    <el-dialog :title="info.id?'编辑':'新增'" :visible.sync="dialogVisible" center width="40%" @close="closeDialog(false)">
+    <el-dialog :title="info.id?'编辑':'新增'" :visible.sync="dialogVisible" :close-on-click-modal="false" center width="40%" @close="closeDialog(false)">
       <el-form ref="formInfo" :model="formInfo" :rules="rules" label-width="100px">
         <el-form-item label="会员名称" prop="name">
           <div class="form-item">

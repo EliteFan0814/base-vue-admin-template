@@ -31,7 +31,8 @@
         </el-dropdown-menu>
       </el-dropdown>
     </div>
-    <el-dialog v-if="showDialog" title="修改密码" :visible.sync="showDialog" center width="40%" @close="closeDialog(false)">
+    <el-dialog v-if="showDialog" title="修改密码" :visible.sync="showDialog" :close-on-click-modal="false" center
+      width="40%" @close="closeDialog(false)">
       <el-form ref="formInfo" :rules="rules" :model="form" label-width="100px">
         <el-form-item label="原密码" prop="oldPwd">
           <div class="form-item">

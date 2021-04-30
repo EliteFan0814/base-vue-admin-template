@@ -4,7 +4,7 @@
       @click=" dialogVisible=true">
       批量上传图片
     </el-button>
-    <el-dialog v-if="dialogVisible" :visible.sync="dialogVisible" :append-to-body="true">
+    <el-dialog v-if="dialogVisible" :visible.sync="dialogVisible" :append-to-body="true" :close-on-click-modal="false">
       <el-upload :multiple="true" :file-list="fileList" :show-file-list="true" :on-remove="handleRemove"
         :on-success="handleSuccess" :before-upload="beforeUpload" class="editor-slide-upload" :action="upImgUrl"
         list-type="picture-card">

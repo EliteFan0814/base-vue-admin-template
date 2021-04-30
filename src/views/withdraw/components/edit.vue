@@ -1,6 +1,6 @@
 <template>
   <div class="edit-wrap">
-    <el-dialog title="拒绝原因" :visible.sync="dialogVisible" center width="40%" @close="closeDialog(false)">
+    <el-dialog title="拒绝原因" :visible.sync="dialogVisible" :close-on-click-modal="false" center width="40%" @close="closeDialog(false)">
       <el-form ref="formInfo" :model="formInfo" :rules="rules" label-width="100px">
         <el-form-item label="拒绝原因" prop="remark">
           <div class="form-item">
