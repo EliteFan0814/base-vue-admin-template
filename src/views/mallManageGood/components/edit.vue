@@ -1,6 +1,7 @@
 <template>
   <div class="edit-wrap">
-    <el-dialog :title="info.id?'编辑':'新增'" :visible.sync="dialogVisible" :close-on-click-modal="false" center width="40%" @close="closeDialog(false)">
+    <el-dialog :title="info.id?'编辑':'新增'" :visible.sync="dialogVisible" :close-on-click-modal="false" center width="40%"
+      @close="closeDialog(false)">
       <el-form ref="formInfo" :model="formInfo" :rules="rules" label-width="100px">
         <el-form-item label="商品名称" prop="name">
           <div class="form-item">
@@ -28,7 +29,7 @@
         </el-form-item>
         <el-form-item label="上传图片">
           <div class="form-item up-wrap">
-            <el-upload :multiple="true" action="https://httpbin.org/post" :limit="imgUpLimit" :file-list="fileList"
+            <el-upload :multiple="true" :action="upImgUrl" :limit="imgUpLimit" :file-list="fileList"
               :show-file-list="true" :on-remove="handleRemove" :on-success="handleSuccess" :before-upload="beforeUpload"
               :on-exceed="handleExceed" list-type="picture-card">
               <i class="el-icon-plus"></i>
@@ -56,6 +57,7 @@ export default {
   },
   data() {
     return {
+      upImgUrl: this.$store.getters.upImgUrl,
       dialogVisible: true,
       formInfo: {
         name: '',

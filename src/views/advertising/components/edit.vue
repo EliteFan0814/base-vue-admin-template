@@ -18,9 +18,9 @@
           </el-form-item>
           <el-form-item label="上传图片">
             <div class="form-item up-wrap">
-              <el-upload :multiple="false" action="https://httpbin.org/post" :file-list="fileList"
-                :show-file-list="true" :on-remove="handleRemove" :on-success="handleSuccess"
-                :before-upload="beforeUpload" :on-exceed="handleExceed" list-type="picture-card">
+              <el-upload :multiple="false" :action="upImgUrl" :file-list="fileList" :show-file-list="true"
+                :on-remove="handleRemove" :on-success="handleSuccess" :before-upload="beforeUpload"
+                :on-exceed="handleExceed" list-type="picture-card">
                 <img v-if="formInfo.picurl" :src="formInfo.picurl" class="good-img" />
                 <i v-else class="el-icon-plus"></i>
                 <!-- <i class="el-icon-plus"></i> -->
